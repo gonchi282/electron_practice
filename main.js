@@ -17,7 +17,7 @@ const createWindow = () => {
             preload: path.join(__dirname, preload_js),
         },
     })
-    debug_log(__dirname)
+    debugLog(__dirname)
     mainWindow.loadFile(path.join(__dirname, index_html))
 }
 
@@ -38,15 +38,13 @@ app.on('window-all-closed', () => {
     app.quit()
 })
 
-ipcMain.handle('ping', () => 'pong')
-
 ipcMain.handle('sendDate', async (event, _startDate, _endDate) => {
     startDate = _startDate
     endDate = _endDate
-    debug_log(`startDate=${startDate}`)
-    debug_log(`endDate=${endDate}`)
+    debugLog(`startDate=${startDate}`)
+    debugLog(`endDate=${endDate}`)
 })
 
-function debug_log(message) {
+function debugLog(message) {
     console.log(`${TAG}${message}`)
 }

@@ -2,16 +2,16 @@ const TAG = 'renderer: '
 
 console = require('electron').remote.require('console');
 
-async function click_send() {
-    const startDate = document.getElementById('start_date')
-    const endDate = document.getElementById('end_date')
+async function sendClicked() {
+    const elemStartDate = document.getElementById('start_date')
+    const elemEndDate = document.getElementById('end_date')
 
-    debug_log(`start_date=${startDate.value}`)
-    debug_log(`end_date=${endDate.value}`)
+    debugLog(`start_date=${elemStartDate.value}`)
+    debugLog(`end_date=${elemEndDate.value}`)
 
-    await window.datacomms.sendDate(startDate.value, endDate.value)
+    await window.datacomms.sendDate(elemStartDate.value, elemEndDate.value)
 }
 
-function debug_log(message) {
+function debugLog(message) {
     console.log(`${TAG}${message}`)
 }
