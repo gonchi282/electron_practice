@@ -1,7 +1,7 @@
 {
   "name": "electron_3",
   "version": "1.0.0",
-  "description": "",
+  "description": "description",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -11,6 +11,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "electron": "^21.3.0"
+    "@notionhq/client": "^2.2.2",
+    "electron": "^21.3.0",
+    "iconv-lite": "^0.6.3"
   }
 }

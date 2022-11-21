@@ -1,5 +1,6 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
+const notionClient = require('./notion_client.js')
 
 const TAG = 'main : '
 
@@ -17,7 +18,6 @@ const createWindow = () => {
             preload: path.join(__dirname, preload_js),
         },
     })
-    debugLog(__dirname)
     mainWindow.loadFile(path.join(__dirname, index_html))
 }
 
@@ -43,7 +43,25 @@ ipcMain.handle('sendDate', async (event, _startDate, _endDate) => {
     endDate = _endDate
     debugLog(`startDate=${startDate}`)
     debugLog(`endDate=${endDate}`)
+    const accessInfo = notionClient.getAccessInfo()
+    const client = notionClient.getClient(accessInfo)
+    const filter = notionClient.getFilter()
+    const response = await notionClient.queryItem(client, accessInfo.database_id, filter)
+    const properties = notionClient.getProperties()
+    const data_str = notionClient.convertStringObject(response.results, properties)
+    notionClient.toWeeklyReportsFormat(data_str)
+    debugLog(data_str)
 })
+
+async function queryItem() {
+    const client = notionClient.getClient(accessInfo)
+    const filter = notionClient.getFilter()
+    const response = await notionClient.queryItem(client, accessInfo.database_id, filter)
+}
+
+function convertToCsv() {
+
+}
 
 function debugLog(message) {
     console.log(`${TAG}${message}`)
