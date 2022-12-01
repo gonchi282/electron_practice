@@ -97,7 +97,7 @@ exports.convertStringObject = function(results, properties) {
     return datas
 }
 
-exports.toWeeklyReportsFormat = function(datas) {
+exports.convertWeeklyReportsFormat = function(datas) {
     let lines = ""
     datas.forEach(data => {
         let line = ""
@@ -111,21 +111,25 @@ exports.toWeeklyReportsFormat = function(datas) {
             }
             line += "時間\t"
             if (loop < 1) {
-                line += exports.toTimeFormat(data["工数"] ?? 0) + "\t"
+                line += toTimeFormat(data["工数"] ?? 0) + "\t"
             } else {
-                line += exports.toTimeFormat(data["工数"] ?? 0)
+                line += toTimeFormat(data["工数"] ?? 0)
             }
         }
         lines += line + "\n"
     })
 
-    fs.writeFileSync("csvdata.tsv", "")
-    let fd = fs.openSync("csvdata.tsv", "w")
-    let buf = iconv.encode(lines, "Shift_JIS")
+    return lines
+}
+
+exports.exportWeeklyReportsTsv = function(filename, tsv_data) {
+    fs.writeFileSync(filename, "")
+    let fd = fs.openSync(filename, "w")
+    let buf = iconv.encode(tsv_data, "Shift_JIS")
     fs.write(fd, buf, 0, buf.length, (err, written, buffer) => {})
 }
 
-exports.toTimeFormat = function(time) {
+function toTimeFormat(time) {
     let integer = Math.floor(time)
     let decimal = time - integer
     let decimalTime = Math.floor(decimal * 60)
