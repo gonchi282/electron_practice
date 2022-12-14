@@ -129,6 +129,33 @@ exports.exportWeeklyReportsTsv = function(filename, tsv_data) {
     fs.write(fd, buf, 0, buf.length, (err, written, buffer) => {})
 }
 
+exports.makeFilter = function(startDate, endDate) {
+    return {
+        "and" : [
+            {
+                "property": "日付",
+                "date": {
+                    "on_or_after": startDate
+                }
+            },
+            {
+                "property": "日付",
+                "date": {
+                    "on_or_before": endDate
+                }
+            }
+        ]
+    }
+}
+
+exports.saveFilter = function(filter) {
+    if (!filter) {
+        return false
+    }
+    fs.writeFileSync(FILTER_FILE, JSON.stringify(filter, null, 4))
+    return true
+}
+
 function toTimeFormat(time) {
     let integer = Math.floor(time)
     let decimal = time - integer

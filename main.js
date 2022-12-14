@@ -39,19 +39,15 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.handle('sendDate', async (event, _startDate, _endDate) => {
-    startDate = _startDate
-    endDate = _endDate
-    debugLog(`startDate=${startDate}`)
-    debugLog(`endDate=${endDate}`)
-    const response = await queryItem()
+    const filter = makeFilter(_startDate, _endDate)
+    const response = await queryItem(filter)
     exportTsv('csvdata.tsv', response)
-    debugLog(response)
+    saveFilter(filter)
 })
 
-async function queryItem() {
+async function queryItem(filter) {
     const accessInfo = notionClient.getAccessInfo()
     const client = notionClient.getClient(accessInfo)
-    const filter = notionClient.getFilter()
     const response = await notionClient.queryItem(client, accessInfo.database_id, filter)
     return response
 }
@@ -65,4 +61,12 @@ function exportTsv(filename, response) {
 
 function debugLog(message) {
     console.log(`${TAG}${message}`)
+}
+
+function makeFilter(startDate, endDate) {
+    return notionClient.makeFilter(startDate, endDate)
+}
+
+function saveFilter(filter) {
+    return notionClient.saveFilter(filter)
 }
