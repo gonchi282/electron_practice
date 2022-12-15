@@ -156,6 +156,12 @@ exports.saveFilter = function(filter) {
     return true
 }
 
+exports.loadFilter = function() {
+    const filterJson = fs.readFileSync(FILTER_FILE)
+    const filter = JSON.parse(filterJson);
+    return filter
+}
+
 function toTimeFormat(time) {
     let integer = Math.floor(time)
     let decimal = time - integer
