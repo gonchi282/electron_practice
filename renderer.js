@@ -12,6 +12,6 @@ async function sendClicked() {
     await window.datacomms.sendDate(elemStartDate.value, elemEndDate.value)
 }
 
-function debugLog(message) {
-    console.log(`${TAG}${message}`)
+async function debugLog(message) {
+    await window.datacomms.debugLog(TAG, message)
 }

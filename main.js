@@ -45,6 +45,10 @@ ipcMain.handle('sendDate', async (event, _startDate, _endDate) => {
     saveFilter(filter)
 })
 
+ipcMain.handle('debugLog', async (event, _tag, _message) => {
+    debugLog(_tag, _message)
+})
+
 async function queryItem(filter) {
     const accessInfo = notionClient.getAccessInfo()
     const client = notionClient.getClient(accessInfo)
@@ -59,14 +63,31 @@ function exportTsv(filename, response) {
     notionClient.exportWeeklyReportsTsv(filename, tsv_data)
 }
 
-function debugLog(message) {
-    console.log(`${TAG}${message}`)
-}
-
 function makeFilter(startDate, endDate) {
     return notionClient.makeFilter(startDate, endDate)
 }
 
 function saveFilter(filter) {
     return notionClient.saveFilter(filter)
+}
+
+function debugLog(...args) {
+    switch (args.length) {
+    case 1:
+        debugLog1(args[0])
+        break;
+    case 2:
+        debugLog2(args[0], args[1])
+        break;
+    default:
+        break;
+    }
+}
+
+function debugLog2(tag, message) {
+    console.log(`${tag}${message}`)
+}
+
+function debugLog1(message) {
+    console.log(`${TAG}${message}`)
 }
