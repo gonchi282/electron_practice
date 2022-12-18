@@ -19,6 +19,9 @@ const createWindow = () => {
         },
     })
     mainWindow.loadFile(path.join(__dirname, index_html))
+    mainWindow.webContents.on('did-finish-load', () =>{
+        mainWindow.webContents.send('onload')
+    })
 }
 
 // app.whenReady.then(() => {
@@ -45,6 +48,11 @@ ipcMain.handle('sendDate', async (event, _startDate, _endDate) => {
     saveFilter(filter)
 })
 
+ipcMain.handle('loadFilter', async (event) => {
+    const filter = loadFilter()
+    return filter
+})
+
 ipcMain.handle('debugLog', async (event, _tag, _message) => {
     debugLog(_tag, _message)
 })
@@ -69,6 +77,10 @@ function makeFilter(startDate, endDate) {
 
 function saveFilter(filter) {
     return notionClient.saveFilter(filter)
+}
+
+function loadFilter() {
+    return notionClient.loadFilter()
 }
 
 function debugLog(...args) {

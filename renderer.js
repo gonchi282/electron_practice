@@ -1,7 +1,5 @@
 const TAG = 'renderer: '
 
-console = require('electron').remote.require('console');
-
 async function sendClicked() {
     const elemStartDate = document.getElementById('start_date')
     const elemEndDate = document.getElementById('end_date')
@@ -17,8 +15,8 @@ async function loadFilter() {
     const startDate = filter.and[0].date.on_or_after
     const endDate = filter.and[1].date.on_or_before
 
-    debugLog(startDate)
-    debugLog(endDate)
+    debugLog(`startDate = ${startDate}`)
+    debugLog(`endDate = ${endDate}`)
 
     let elementStartDate = document.getElementById('start_date')
     let elementEndDate = document.getElementById('end_date')
@@ -30,3 +28,7 @@ async function loadFilter() {
 async function debugLog(message) {
     await window.datacomms.debugLog(TAG, message)
 }
+
+window.datacomms.onload((event) => {
+    loadFilter()
+})
