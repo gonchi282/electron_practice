@@ -166,6 +166,11 @@ function toTimeFormat(time) {
     let integer = Math.floor(time)
     let decimal = time - integer
     let decimalTime = Math.floor(decimal * 60)
-    let timeStr = `${integer}:${decimalTime}`
+    let timeStr = ""
+    if (decimalTime >= 10) {
+        timeStr = `${integer}:${decimalTime}`
+    } else {
+        timeStr = `${integer}:0${decimalTime}`
+    }
     return timeStr
 }
