@@ -18,8 +18,8 @@ async function loadFilter() {
     debugLog(`startDate = ${startDate}`)
     debugLog(`endDate = ${endDate}`)
 
-    let elementStartDate = document.getElementById('start_date')
-    let elementEndDate = document.getElementById('end_date')
+    const elementStartDate = document.getElementById('start_date')
+    const elementEndDate = document.getElementById('end_date')
 
     elementStartDate.value = startDate
     elementEndDate.value = endDate

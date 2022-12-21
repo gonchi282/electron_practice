@@ -37,15 +37,18 @@ const createWindow = () => {
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin')
-    app.quit()
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
 })
 
 ipcMain.handle('sendDate', async (event, _startDate, _endDate) => {
+    let ret = true
     const filter = makeFilter(_startDate, _endDate)
     const response = await queryItem(filter)
     exportTsv('csvdata.tsv', response)
-    saveFilter(filter)
+    ret = saveFilter(filter)
+    return ret
 })
 
 ipcMain.handle('loadFilter', async (event) => {
