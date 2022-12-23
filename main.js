@@ -60,6 +60,10 @@ ipcMain.handle('debugLog', async (event, _tag, _message) => {
     debugLog(_tag, _message)
 })
 
+ipcMain.handle('getTsvData', async (event) => {
+    return gTsvData
+})
+
 async function queryItem(filter) {
     const accessInfo = notionClient.getAccessInfo()
     const client = notionClient.getClient(accessInfo)
@@ -67,11 +71,12 @@ async function queryItem(filter) {
     return response
 }
 
+var gTsvData = null
 function exportTsv(filename, response) {
     const properties = notionClient.getProperties()
-    const data_str = notionClient.convertStringObject(response.results, properties)
-    const tsv_data = notionClient.convertWeeklyReportsFormat(data_str)
-    notionClient.exportWeeklyReportsTsv(filename, tsv_data)
+    const dataStr = notionClient.convertStringObject(response.results, properties)
+    gTsvData = notionClient.convertWeeklyReportsFormat(dataStr)
+    notionClient.exportWeeklyReportsTsv(filename, gTsvData)
 }
 
 function makeFilter(startDate, endDate) {
